@@ -1,0 +1,13 @@
+# Data & file besar
+data/*
+vectorstore/*
+
+# Virtual environment
+.venv/*
+
+# IDE / editor
+.idea/*
+
+# Python cache
+__pycache__/
+*.pyc

@@ -1,0 +1,1 @@
+ # Script retrieval dari vector DB
