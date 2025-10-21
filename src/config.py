@@ -13,9 +13,14 @@ MODEL_CONFIG = {
     "generation_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
     "top_k": 3,
     "language": "id",
-    "device": "cpu"
+    "device": "cpu",
+    "temperature" : 0.7,
+    "top_p": 0.9
 }
 
 SYSTEM_PROMPT = "Chatbot yang hanya membahas tentang COVID-19 di Indonesia"
 
 if __name__ == "__main__":
+    print("BASE_DIR:", BASE_DIR)
+    print("INDEX_PATH:", INDEX_PATH) 
+    print("TEXT_PATH exists:", os.path.exists(TEXT_PATH))

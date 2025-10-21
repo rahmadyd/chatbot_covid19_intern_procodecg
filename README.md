@@ -9,8 +9,7 @@ yang menggunakan data publik dari kaggle dan Generate ChatGPT
 - Upload dataset (PDF/CSV/TXT).
 - Simpan embedding dengan ChromaDB.
 - Retrieval data relevan berdasarkan query.
-- Jawaban dihasilkan oleh LLM lokal (phi3:mini + gemma3:1b).
-- Jawaban dihasilkan oleh LLM cloud (API key dari  )
+- Jawaban dihasilkan oleh LLM.
 - UI sederhana dengan Streamlit.
 
 

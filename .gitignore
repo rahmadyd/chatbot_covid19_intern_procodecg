@@ -1,12 +1,12 @@
 # Data & file besar
-data/*
-vectorstore/*
+data/
+vectorstore/
 
 # Virtual environment
-.venvr/*
+.venvr/
 
 # IDE / editor
-.idea/*
+.idea/
 
 # Python cache
 __pycache__/
