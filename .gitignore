@@ -1,6 +1,8 @@
 # Data & file besar
 data/
 vectorstore/
+vector_db/
+faiss/
 
 # Virtual environment
 .venvr/
@@ -11,3 +13,4 @@ vectorstore/
 # Python cache
 __pycache__/
 *.pyc
+

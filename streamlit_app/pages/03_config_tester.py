@@ -1,4 +1,3 @@
-# 03_config_tester.py
 import streamlit as st
 from src import config
 
