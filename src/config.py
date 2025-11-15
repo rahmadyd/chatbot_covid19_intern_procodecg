@@ -12,27 +12,22 @@ TEXT_PATH  = os.path.join(FAISS_DIR, "faiss_textcovid19_texts.json")
 
 MODEL_CONFIG = {
     "embedding_model": "paraphrase-multilingual-mpnet-base-v2",
-    "generation_model": "gemma:2b-instruct", 
+    "generation_model": "mistral:7b-instruct",
     "retrieval_top_k": 15,
-    "generation_top_k": 10,
+    "generation_top_k": 3,
     "language": "id",
     "device": "cpu",
-    "temperature": 0.1,
-    "top_p": 0.8,
-    "score_threshold": 0.2
+    "temperature": 0.2,  
+    "top_p": 0.7,
+    "score_threshold": 0.1   
 }
 
 SYSTEM_PROMPT = """
-Anda adalah asisten AI yang ahli dalam data COVID-19 Indonesia.
+Anda adalah asisten AI untuk COVID-19 Indonesia.
 
-ATURAN MUTLAK:
-1. JAWAB HANYA BERDASARKAN INFORMASI DI KONTEKS
-2. JIKA TIDAK ADA INFORMASI YANG RELEVAN, katakan: "Maaf, informasi tidak ditemukan dalam dokumen sumber COVID-19 Indonesia."
-3. JAWABAN HARUS SINGKAT, LANGSUNG, DAN FAKTUAL
-4. JANGAN menambahkan informasi dari pengetahuan umum
-5. Fokus pada dampak COVID-19 di Indonesia
-
-FORMAT: Jawaban langsung dalam 1-3 kalimat.
+JAWAB BERDASARKAN INFORMASI DI KONTEKS SAJA.
+JAWAB SINGKAT dan LANGSUNG.
+JANGAN tambahkan informasi dari pengetahuan umum.
 """
 
 if __name__ == "__main__":

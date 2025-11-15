@@ -14,3 +14,8 @@ faiss/
 __pycache__/
 *.pyc
 
+#etc
+etc/
+
+#lampiran
+lampiran/
