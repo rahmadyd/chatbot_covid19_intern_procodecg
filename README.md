@@ -9,7 +9,6 @@ AI-powered chatbot that provides accurate COVID-19 information using Retrieval-A
 - **RAG Architecture**: Ensures factual answers from trusted documents
 - **Safety System**: Guard rails to prevent harmful content
 - **Web Interface**: Streamlit-based user interface
-- **Multi-layer Fallback**: 100% reliability guarantee
 
 ## Tech Stack
 
@@ -24,7 +23,7 @@ AI-powered chatbot that provides accurate COVID-19 information using Retrieval-A
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/covid19-chatbot.git
+git clone https://github.com/rahmadyd/chatbot_covid19_intern_procodecg.git
 cd covid19-chatbot
 ```
 
