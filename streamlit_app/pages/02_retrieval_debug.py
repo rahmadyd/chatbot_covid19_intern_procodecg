@@ -16,7 +16,7 @@ if project_root not in sys.path:
 import streamlit as st
 
 try:
-    from retriever import Retriever
+    from src.retriever import Retriever
     print("✅ Retriever imported successfully")
 except ImportError as e:
     st.error(f"❌ Import failed: {e}")

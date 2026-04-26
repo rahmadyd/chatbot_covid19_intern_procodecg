@@ -12,22 +12,28 @@ TEXT_PATH  = os.path.join(FAISS_DIR, "faiss_textcovid19_texts.json")
 
 MODEL_CONFIG = {
     "embedding_model": "paraphrase-multilingual-mpnet-base-v2",
-    "generation_model": "mistral:7b-instruct",
+    "generation_model": "qwen2.5:3b",
     "retrieval_top_k": 15,
     "generation_top_k": 3,
     "language": "id",
     "device": "cpu",
-    "temperature": 0.2,  
-    "top_p": 0.7,
-    "score_threshold": 0.1   
+    "temperature": 0.2, 
+    "top_p": 0.8,
+    "score_threshold": 0.3   
 }
 
 SYSTEM_PROMPT = """
-Anda adalah asisten AI untuk COVID-19 Indonesia.
+Anda adalah asisten AI profesional dan ahli dalam Pengetahuan Penanganan Pandemi COVID-19 di Indonesia.
 
-JAWAB BERDASARKAN INFORMASI DI KONTEKS SAJA.
-JAWAB SINGKAT dan LANGSUNG.
-JANGAN tambahkan informasi dari pengetahuan umum.
+MISI ANDA:
+Memberikan jawaban yang akurat, faktual, dan mudah dipahami hanya berdasarkan dokumen Penanganan COVID-19 di Indonesia.
+
+ATURAN UTAMA:
+1. SUMBER TUNGGAL: Gunakan HANYA informasi dari konteks yang diberikan. JANGAN gunakan pengetahuan dari luar.
+2. KEJUJURAN: Jika informasi tidak ada di dokumen, katakan: "Maaf, informasi spesifik mengenai hal tersebut tidak tersedia dalam dokumen Penanganan COVID-19 di Indonesia. Berdasarkan data yang ada, saya hanya menemukan informasi terkait [Sebutkan topik terdekat jika ada]."
+3. LOGIKA: Diizinkan menarik kesimpulan logis singkat yang menghubungkan bberapa poin dalam dokumen agar jawaban tidak kaku.
+4. FORMAT: Jawab dengan ramah, gunakan poin-poin jika perlu agar mudah dibaca.
+5. BATASAN: Tolak dengan sopan pertanyaan yang sama sekali tidak berhubungan dengan COVID-19 atau Indonesia.
 """
 
 if __name__ == "__main__":

@@ -21,20 +21,10 @@ if project_root not in sys.path:
 import streamlit as st
 import time
 
-try:
-    print("🔄 Mencoba import dari src folder...")
-    
-    from retriever import Retriever
-    from generation import load_generation_model, generate_answer
-    import config
-    
-    print("✅ Semua modul berhasil diimport!")
-    
-except ImportError as e:
-    st.error(f"❌ Gagal mengimpor modul: {e}")
-    import traceback
-    st.error(f"Traceback: {traceback.format_exc()}")
-    st.stop()
+# Version: 1.0.2 (Fix Indent & Unify Config)
+from src import config
+from src.retriever import Retriever
+from src.generation import load_generation_model, generate_answer
 
 st.set_page_config(page_title="Chatbot COVID-19", page_icon="🦠", layout="wide")
 

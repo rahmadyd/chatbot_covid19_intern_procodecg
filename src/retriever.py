@@ -29,10 +29,15 @@ class Retriever:
         self._load_components()
     
     def _load_components(self):
-        """Load model dan index"""
+        """Load model dan index dengan optimasi hardware"""
         try:
-            print("🔄 Loading embedder...")
-            self.embedder = SentenceTransformer('paraphrase-multilingual-mpnet-base-v2')
+            from src import config
+            model_name = config.MODEL_CONFIG.get("embedding_model", "paraphrase-multilingual-mpnet-base-v2")
+            device = config.MODEL_CONFIG.get("device", "cpu")
+            
+            print(f"🔄 Loading embedder ({model_name}) on {device}...")
+            # Pindahkan ke device (cuda/cpu) sesuai config
+            self.embedder = SentenceTransformer(model_name, device=device)
             
             print("🔄 Loading FAISS index...")
             if os.path.exists(self.index_path):
@@ -79,19 +84,14 @@ class Retriever:
                         text = str(text)
                     
                     if score > self.score_threshold:
-                        query_words = set(query.lower().split())
-                        text_words = set(text.lower().split())
-                        word_overlap = len(query_words.intersection(text_words))
-                        
-                        if word_overlap >= 1:  
-                            results.append({
-                                "text": text,
-                                "score": float(score),
-                                "original_score": float(score),
-                                "rank": i + 1,
-                                "doc_id": int(idx)
-                            })
-                            print(f"   ✅ Accepted: score={score:.3f}, overlap={word_overlap}")
+                        results.append({
+                            "text": text,
+                            "score": float(score),
+                            "original_score": float(score),
+                            "rank": i + 1,
+                            "doc_id": int(idx)
+                        })
+                        print(f"   ✅ Accepted: score={score:.3f}")
             
             print(f"🎯 Final results: {len(results)} documents")
             
@@ -144,19 +144,14 @@ class Retriever:
                         text = str(text)
                     
                     if score > self.score_threshold:
-                        query_words = set(query.lower().split())
-                        text_words = set(text.lower().split())
-                        word_overlap = len(query_words.intersection(text_words))
-                        
-                        if word_overlap >= 1:
-                            results.append({
-                                "text": text,
-                                "score": float(score),
-                                "original_score": float(score),
-                                "rank": i + 1,
-                                "doc_id": int(idx)
-                            })
-                            debug_info['found_documents'] += 1
+                        results.append({
+                            "text": text,
+                            "score": float(score),
+                            "original_score": float(score),
+                            "rank": i + 1,
+                            "doc_id": int(idx)
+                        })
+                        debug_info['found_documents'] += 1
             
             results.sort(key=lambda x: x["score"], reverse=True)
             

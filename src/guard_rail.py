@@ -66,7 +66,7 @@ class GuardRail:
         ]
         
         self.security_blocked_keywords = [
-            'meretas', 'hack', 'crack', 'bypass', 'exploit', 'virus', 'malware',
+            'meretas', 'hack', 'crack', 'bypass', 'exploit', 'malware',
             'serangan', 'attack', 'injeksi', 'injection', 'sql injection',
             'backdoor', 'remote access', 'brute force', 'password', 'login',
             'security bug', 'kerentanan', 'vulnerability', 'zero day',
