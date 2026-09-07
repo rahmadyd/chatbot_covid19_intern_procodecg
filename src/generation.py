@@ -12,7 +12,7 @@ if project_root not in sys.path:
 from src.guard_rail import GuardRail
 import src.config as config
 
-LLM_MODEL = config.MODEL_CONFIG.get("generation_model", "gemma:2b-instruct")
+LLM_MODEL = config.MODEL_CONFIG.get("generation_model", "mistral:7b-instruct")
 
 def load_generation_model():
     try:
@@ -79,7 +79,7 @@ def generate_answer(question, retrieved_docs, model_id):
     # Pastikan model_id benar
     if not model_id:
         from src import config
-        model_id = config.MODEL_CONFIG.get("generation_model", "qwen2.5:3b")
+        model_id = config.MODEL_CONFIG.get("generation_model", "mistral:7b-instruct")
 
     print(f"\n💬 USER: '{question}'")
     

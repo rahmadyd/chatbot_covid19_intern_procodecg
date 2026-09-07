@@ -1,34 +1,69 @@
 # 🦠 COVID-19 Chatbot (True RAG Architecture)
 
-Chatbot AI interaktif yang dirancang untuk memberikan informasi akurat tentang COVID-19 di Indonesia, menggunakan teknologi **Retrieval-Augmented Generation (RAG)**. 
+Chatbot AI interaktif yang dirancang untuk memberikan informasi akurat dan faktual mengenai penanganan COVID-19 di Indonesia menggunakan teknologi **Retrieval-Augmented Generation (RAG)** murni.
 
-Dibangun khusus agar berjalan sangat ringan, responsif, dan optimal merespons instruksi kompleks dengan menggunakan **Qwen2.5 3B** LLM secara lokal, sangat cocok untuk kapabilitas RAM dan VRAM menangah (eg: 4GB VRAM).
+Dibangun khusus agar berjalan sangat ringan, responsif, dan optimal merespons instruksi kompleks dengan menggunakan **Mistral 7B-Instruct** LLM secara lokal via Ollama, sangat cocok untuk kapabilitas RAM dan VRAM menengah.
 
 ---
 
 ## ✨ Fitur Unggulan
 
-- **True RAG Pipeline**: Chatbot 100% menarik pengetahuan berlandaskan dokumen FAISS (tidak pakai hardcoded fallback).
-- **Semantic Vector Search**: Mencari kesamaan makna antara pertanyaan dan dokumen rujukan tanpa mengandalkan pencocokan kata kaku (word overlap).
-- **Lightweight & Efisien**: Dependencies super ramping (tidak butuh Langchain/Bloatware), respons sekejap.
-- **Advanced Local LLM**: Didukung oleh kecerdasan *Qwen2.5 3B* via Ollama yang sangat natural untuk tata bahasa Indonesia.
-- **Robust Guardrail**: Perlindungan otomatis, aman dari prompt injection/security threats, dan dioptimasi khusus untuk tidak memblokir keyword "virus corona".
+- **True RAG Pipeline**: Chatbot 100% menarik pengetahuan berlandaskan dokumen FAISS secara dinamis tanpa mengandalkan *hardcoded fallback*.
+- **Semantic Vector Search**: Menggunakan embedding `paraphrase-multilingual-mpnet-base-v2` untuk mencari kesamaan makna antara pertanyaan dan dokumen rujukan tanpa pencocokan kata kaku (*word overlap*).
+- **Multi Chat Rooms & History Persistence**: Mendukung pembuatan banyak ruang obrolan (*chat rooms*), ubah nama, hapus chat, serta menyimpan riwayat percakapan secara otomatis ke `data/chat_rooms.json`.
+- **Transparansi Sumber Referensi**: Setiap jawaban dilengkapi dengan rincian sumber referensi, tingkat relevansi (*similarity score*), dan cuplikan teks dokumen yang digunakan.
+- **Robust Guardrail**: Saringan keamanan otomatis di [src/guard_rail.py](file:///d:/chatbot_covid19_intern_procodecg/src/guard_rail.py) yang melindungi sistem dari *prompt injection*, topik di luar konteks COVID-19, serta kata kunci berbahaya.
+- **Retrieval Debugger**: Fitur interaktif untuk menganalisis dan menguji skor relevansi dokumen FAISS secara transparan.
+- **Lightweight & Efisien**: Berjalan murni dengan Python, FAISS, dan Ollama tanpa *framework bloatware* berlebih.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Backend**: Python 3.x
+* **Language**: Python 3.x
 * **Vector DB**: FAISS (Facebook AI Similarity Search)
-* **Embeddings**: `paraphrase-multilingual-mpnet-base-v2`
-* **Local LLM**: Qwen2.5 (3 Billion Parameters) via **Ollama**
-* **Frontend UI**: Streamlit
+* **Embeddings**: `paraphrase-multilingual-mpnet-base-v2` (via `sentence-transformers`)
+* **Local LLM**: Mistral 7B-Instruct (7 Billion Parameters) via **Ollama**
+* **Frontend UI**: Streamlit (Multi-page app)
 
 ---
 
-## 🚀 Panduan Instalasi (Standard)
+## 📂 Struktur Repository
 
-Ikuti langkah-langkah di bawah ini untuk menjalankan chatbot secara lokal.
+```text
+chatbot_covid19_intern_procodecg/
+├── data/                       # Data mentah, hasil chunking, & riwayat chat
+│   ├── chat_rooms.json         # Data riwayat percakapan chat rooms
+│   └── chunks.json             # Dokumen teks yang sudah di-chunk
+├── faiss/                      # Index & metadata FAISS Vector Store
+│   ├── faiss_textcovid19.index # File index FAISS
+│   └── faiss_textcovid19_texts.json # Metadata/teks dokumen FAISS
+├── notebooks/                  # Notebook eksperimen & pipeline data
+│   ├── 01_data_cleaning.ipynb
+│   ├── 02_text_chunking.ipynb
+│   ├── 03_embedding_test.ipynb
+│   ├── 04_Indexing_faiss.ipynb
+│   └── 05_retrieval_demo.ipynb
+├── src/                        # Logic utama RAG Backend
+│   ├── config.py               # Konfigurasi model, path, & prompt
+│   ├── generation.py           # Pipeline pemanggilan LLM Ollama
+│   ├── guard_rail.py           # Validasi & pengaman input/output
+│   └── retriever.py            # Pencarian vektor FAISS
+├── streamlit_app/              # Antarmuka Pengguna (Frontend)
+│   ├── app.py                  # Entrypoint / Halaman Utama
+│   └── pages/                  # Halaman navigasi (Chat, Debug, Config, Cache)
+│       ├── 01_chat.py          # Halaman Chatbot Utama
+│       ├── 02_retrieval_debug.py # Halaman Debugger Retrieval
+│       ├── 03_config_tester.py # Halaman Pengujian Konfigurasi
+│       └── 04_clear_cache.py   # Halaman Pembersihan Cache
+├── lampiran/                   # Diagram arsitektur & screenshot aplikasi
+├── requirements.txt            # Package dependencies
+└── README.md                   # Dokumentasi proyek
+```
+
+---
+
+## 🚀 Panduan Instalasi & Penggunaan
 
 ### 1. Persiapan Repository
 ```bash
@@ -37,35 +72,36 @@ cd chatbot_covid19_intern_procodecg
 ```
 
 ### 2. Install Dependencies
-Pastikan kamu menggunakan virtual environment (opsional namun disarankan).
+Disarankan menggunakan virtual environment:
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 3. Setup Ollama & Tarik Model AI
-Pastikan aplikasi [Ollama](https://ollama.com/) sudah terinstall dan berjalan di background laptop kamu. Lalu buka terminal/CMD dan jalankan:
+Pastikan aplikasi [Ollama](https://ollama.com/) sudah terinstall dan berjalan di latar belakang (background). Buka terminal / CMD lalu jalankan:
 ```bash
-ollama pull qwen2.5:3b
+ollama pull mistral:7b-instruct
 ```
-*(Model ini besarnya hanya sekitar ~1.9 GB dan sangat bersahabat untuk VRAM 4GB).*
+*(Atau `ollama pull mistral` untuk tag standar Mistral 7B-Instruct).*
 
-### 4. Jalankan Aplikasi Web
+### 4. Jalankan Aplikasi Web Streamlit
 ```bash
 streamlit run streamlit_app/app.py
 ```
-
-Aplikasi otomatis akan terbuka di browser kamu (biasanya di `http://localhost:8501`).
+Aplikasi akan otomatis terbuka di browser di `http://localhost:8501`.
 
 ---
 
-## ⚙️ Penyesuaian & Konfigurasi Ekstra
-Kamu dapat memodifikasi batas kreativitas AI dan limit pencarian dokumen melalui file `src/config.py`:
-- `generation_model` : Mengatur model ollama apa yang ingin di eksekusi.
-- `score_threshold` : (Default `0.3`) Mengatur seberapa longgar/ketat kemiripan makna dokumen rujukan FAISS.
-- `num_predict` : Ekstra limit max panjang karakter balasan (di file `generation.py`).
+## ⚙️ Penyesuaian & Konfigurasi
+
+Anda dapat menyesuaikan parameter sistem pada file `src/config.py`:
+- `generation_model` : Mengatur model LLM Ollama yang digunakan (default: `mistral:7b-instruct`).
+- `embedding_model` : Model embedding SentenceTransformer (default: `paraphrase-multilingual-mpnet-base-v2`).
+- `score_threshold` : Ambang batas kemiripan dokumen FAISS.
+- `temperature` & `top_p` : Mengatur tingkat kreativitas dan keberagaman jawaban LLM.
 
 ---
 
 ## 📜 Lisensi & Acknowledgments
 - Dikembangkan dalam rangka program magang di **ProcodeCG**.
-- Menggunakan teknologi Semantic Search murni berbasis FAISS dan Sentence Transformers.
+- Menggunakan teknologi Semantic Search murni berbasis FAISS, Sentence Transformers, dan local LLM Ollama.

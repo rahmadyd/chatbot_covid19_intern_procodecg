@@ -12,7 +12,7 @@ TEXT_PATH  = os.path.join(FAISS_DIR, "faiss_textcovid19_texts.json")
 
 MODEL_CONFIG = {
     "embedding_model": "paraphrase-multilingual-mpnet-base-v2",
-    "generation_model": "qwen2.5:3b",
+    "generation_model": "mistral:7b-instruct",
     "retrieval_top_k": 15,
     "generation_top_k": 3,
     "language": "id",
